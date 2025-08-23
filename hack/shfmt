@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -o nounset
+set -o errexit
+
+# ensure these flags are equivalent to the rules in the .editorconfig
+FLAGS="--list --language-dialect auto --indent 2 --binary-next-line --case-indent --space-redirects"
+
+cd "$(dirname $0)/.."
+WORKDIR=$(realpath .)
+
+FILES=$(hack/shfmt_command.sh --find --language-dialect auto "${WORKDIR}" | grep -v "nodeadm/vendor/")
+
+hack/shfmt_command.sh ${FLAGS} "$@" ${FILES}
